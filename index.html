@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Reserva de Salas</title>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">
+    <link rel="stylesheet"
+        href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css">
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body ng-app="app">
+    <div class="bmd-layout-container bmd-drawer-f-l">
+        <header class="bmd-layout-header">
+            <div class="navbar navbar-light bg-faded">
+                <button class="navbar-toggler" type="button" data-toggle="drawer" data-target="#dw-s1">
+                    <i class="material-icons">menu</i>
+                </button>
+            </div>
+        </header>
+
+        <div id="dw-s1" class="bmd-layout-drawer bg-faded">
+            <header>
+                <a class="navbar-brand">Reserva de Salas</a>
+            </header>
+            <ul class="list-group">
+                <a class="list-group-item" href="#!home">Home</a>
+            </ul>
+        </div>
+        <main class="bmd-layout-content">
+            <div ng-view class="container"></div>
+        </main>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://unpkg.com/popper.js@1.12.6/dist/umd/popper.js"></script>
+    <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js"></script>
+    <script>$(document).ready(function () { $('body').bootstrapMaterialDesign(); });</script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular-route.js"></script>
+
+    <script>
+        var app = angular.module("app", ["ngRoute"]);
+
+        app.config(($routeProvider) => {
+            $routeProvider.when("/home", {
+                templateUrl: './templates/home.html'
+            });
+        });
+    </script>
+</body>
+
+</html>
