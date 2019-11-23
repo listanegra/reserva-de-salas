@@ -5,6 +5,7 @@ $(window).on('resize', window.updateDrawer);
 var app = angular.module("app", ["ngRoute"]).config(($routeProvider) => {
     $routeProvider.when('/', {
         templateUrl: './templates/login.html',
+        controller: "Main"
     }).when('/home', {
         templateUrl: './templates/home.html',
         controller: 'Home'
@@ -24,12 +25,12 @@ app.controller('Main', function ($scope, $rootScope, $location) {
         window.updateDrawer();
     });
 
+    $scope.doLogin = () => $location.path('/home');
     $scope.isLoginScreen = () => {
         return $location.path() == '/';
     }
 
     $scope.checkUsuario = (usuario) => {
-        console.log(usuario);
         return $rootScope.usuarios[usuario] && $rootScope.usuarios[usuario].permissions == 'root';
     }
 });

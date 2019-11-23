@@ -1,10 +1,10 @@
 <div class="align-self-center" style="width: 18rem;">
     <div class="card card-body">
         <h5 class="card-title text-center">Reserva de salas</h5>
-        <form action="#!home" method="GET">
+        <form ng-submit="doLogin()">
             <fieldset class="form-group">
                 <label for="usuario" class="bmd-label-floating">Usuário</label>
-                <input type="text" class="form-control" id="usuario" required>
+                <input type="text" class="form-control" id="usuario" ng-model="$root.usuario" required>
             </fieldset>
             <fieldset class="form-group">
                 <label for="senha" class="bmd-label-floating">Senha</label>
