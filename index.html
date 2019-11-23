@@ -13,9 +13,9 @@
     <link rel="stylesheet" href="./style.css">
 </head>
 
-<body ng-app="app" ng-controller="main">
+<body ng-app="app" ng-controller="Main">
     <div class="bmd-layout-container bmd-drawer-f-l">
-        <header class="bmd-layout-header" ng-if="showDrawer()">
+        <header class="bmd-layout-header" ng-show="!isLoginScreen()">
             <div class="navbar navbar-light bg-faded">
                 <button class="navbar-toggler" type="button" data-toggle="drawer" data-target="#dw-s1">
                     <i class="material-icons">menu</i>
@@ -23,18 +23,19 @@
             </div>
         </header>
 
-        <div id="dw-s1" class="bmd-layout-drawer bg-faded" ng-if="showDrawer()">
+        <div id="dw-s1" class="bmd-layout-drawer bg-faded" ng-show="!isLoginScreen()">
             <header>
                 <a class="navbar-brand">Reserva de Salas</a>
             </header>
             <ul class="list-group">
                 <a class="list-group-item" href="#!home">Home</a>
-                <a class="list-group-item" href="#!cadastro">Cadastro de Usuários</a>
+                <a class="list-group-item" href="#!cadastro">Cadastro de
+                    Usuários</a>
             </ul>
         </div>
-        
+
         <main class="bmd-layout-content">
-            <div ng-view class="container d-flex justify-content-center h-100"></div>
+            <div ng-view class="container d-flex justify-content-center" ng-class="{'h-100': isLoginScreen()}"></div>
         </main>
     </div>
 
@@ -43,26 +44,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular-route.js"></script>
     <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js"></script>
-
-    <script>
-        var app = angular.module("app", ["ngRoute"]);
-
-        app.config(($routeProvider) => {
-            $routeProvider.when('/', {
-                templateUrl: './templates/login.html'
-            }).when('/home', {
-                templateUrl: './templates/home.html'
-            });
-        });
-
-        app.controller('main', ($scope, $location) => {
-            $scope.$on('$viewContentLoaded', () => $('body').bootstrapMaterialDesign());
-            
-            $scope.showDrawer = () => {
-                return $location.path() != '/';
-            }
-        });
-    </script>
+    <script src="./index.js"></script>
 </body>
 
 </html>
