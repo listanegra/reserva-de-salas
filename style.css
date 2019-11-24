@@ -9,3 +9,23 @@ body, html {
 .bmd-layout-canvas {
     flex-grow: 1;
 }
+
+rect.sala {
+    fill: transparent;
+    stroke: black;
+    stroke-width: 2px;
+}
+
+rect.sala:hover {
+    fill: #eaeaea;
+}
+
+rect.sala:active {
+    fill: #d0d0d0;
+}
+
+.mapa {
+    fill: transparent;
+    stroke: black;
+    stroke-width: 2px;
+}
