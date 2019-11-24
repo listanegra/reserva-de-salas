@@ -1,15 +1,28 @@
-<div class="card card-body">
+<div id="card_mapa" class="card card-body">
     <h5 class="card-title text-center">Mapa de salas</h5>
 
-    <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="100%" height="500">
+    <svg id="view_mapa" version="1.0" xmlns="http://www.w3.org/2000/svg" width="100%" height="500"
+        ng-click="ocultarDetalhes()">
         <g transform="translate(1.0, 1.0)" fill="transparent" stroke="none">
-            <rect id="C202" class="sala" x="0" y="0" width="130" height="220"></rect>
-            <rect id="C203" class="sala" x="0" y="220" width="130" height="220"></rect>
-            <rect class="sala" x="320" y="50" width="180" height="100"></rect>
+            <rect id="C202" class="sala" x="0" y="0" width="130" height="220" ng-click="mostrarDetalhes('C202'); $event.stopPropagation();"></rect>
+            <rect id="C203" class="sala" x="0" y="220" width="130" height="220" ng-click="mostrarDetalhes('C203'); $event.stopPropagation();"></rect>
+            <rect id="C201" class="sala" x="320" y="50" width="180" height="100" ng-click="mostrarDetalhes('C201'); $event.stopPropagation();"></rect>
 
             <path class="mapa" d="M 130 0 H 500 V 50 H 320 V 80 H 250 V 50 H 180 V 440 H 130 Z" />
             <rect class="mapa" x="250" y="80" width="70" height="70"></rect>
 
         </g>
     </svg>
+
+    <div id="card_descricao" class="card">
+        <h5 class="card-header">Sala <span ng-bind="sala_selecionada.nome"></span></h5>
+        <div class="card-body">
+            <h5 class="card-title">
+                Bloco <span ng-bind="sala_selecionada.dados.bloco"></span> - Piso <span
+                    ng-bind="sala_selecionada.dados.piso"></span>
+            </h5>
+            <h6 class="card-subtitle mb-2 text-muted" ng-bind="sala_selecionada.dados.descricao"></h6>
+            <button type="button" class="float-right btn btn-primary">Reservar</button>
+        </div>
+    </div>
 </div>
