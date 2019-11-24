@@ -17,7 +17,7 @@ var app = angular.module("app", ["ngRoute"]).config(($routeProvider) => {
     }).otherwise('/');
 });
 
-app.controller('Main', function ($scope, $rootScope, $location) {
+app.controller('Main', function($scope, $rootScope, $location) {
     $rootScope.usuarios = {
         'admin': { permissions: 'root' }
     };
@@ -31,7 +31,7 @@ app.controller('Main', function ($scope, $rootScope, $location) {
         if ($rootScope.usuarios[usuario]) {
             $location.path('/home');
         } else {
-            $.snackbar({content: "Usuário/Senha inválidos"});
+            $.snackbar({ content: "Usuário/Senha inválidos" });
         }
     }
     $scope.isLoginScreen = () => $location.path() == '/';
@@ -41,10 +41,10 @@ app.controller('Main', function ($scope, $rootScope, $location) {
     }
 });
 
-app.controller('Home', function ($scope, $rootScope, $location) {
+app.controller('Home', function($scope, $rootScope, $location) {
 
 });
 
-app.controller('Cadastro', function ($scope, $rootScope, $location) {
+app.controller('Cadastro', function($scope, $rootScope, $location) {
 
 });

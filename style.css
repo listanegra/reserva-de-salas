@@ -1,4 +1,5 @@
-body, html {
+body,
+html {
     height: 100%;
 }
 
@@ -22,6 +23,10 @@ rect.sala:hover {
 
 rect.sala:active {
     fill: #d0d0d0;
+}
+
+#cidade {
+    margin-top: 11px;
 }
 
 .mapa {
