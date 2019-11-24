@@ -1,7 +1,7 @@
 <div class="align-self-center" style="width: 18rem;">
     <div class="card card-body">
         <h5 class="card-title text-center">Reserva de salas</h5>
-        <form ng-submit="doLogin()">
+        <form ng-submit="doLogin($root.usuario)">
             <fieldset class="form-group">
                 <label for="usuario" class="bmd-label-floating">Usuário</label>
                 <input type="text" class="form-control" id="usuario" ng-model="$root.usuario" required>

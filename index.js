@@ -12,6 +12,8 @@ var app = angular.module("app", ["ngRoute"]).config(($routeProvider) => {
     }).when('/cadastro', {
         templateUrl: './templates/cadastro.html',
         controller: 'Cadastro'
+    }).when('/salas', {
+        templateUrl: './templates/mapa.html',
     }).otherwise('/');
 });
 
@@ -25,10 +27,14 @@ app.controller('Main', function ($scope, $rootScope, $location) {
         window.updateDrawer();
     });
 
-    $scope.doLogin = () => $location.path('/home');
-    $scope.isLoginScreen = () => {
-        return $location.path() == '/';
+    $scope.doLogin = (usuario) => {
+        if ($rootScope.usuarios[usuario]) {
+            $location.path('/home');
+        } else {
+            $.snackbar({content: "Usuário/Senha inválidos"});
+        }
     }
+    $scope.isLoginScreen = () => $location.path() == '/';
 
     $scope.checkUsuario = (usuario) => {
         return $rootScope.usuarios[usuario] && $rootScope.usuarios[usuario].permissions == 'root';
