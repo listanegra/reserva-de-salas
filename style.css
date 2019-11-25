@@ -34,3 +34,10 @@ rect.sala:active {
     stroke: black;
     stroke-width: 2px;
 }
+
+text {
+    fill: #000000;
+    text-anchor: middle;
+    font-size: 18px;
+    pointer-events: none;
+}
