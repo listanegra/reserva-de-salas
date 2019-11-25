@@ -57,17 +57,37 @@ app.controller('Mapa', function ($scope, $rootScope, $location) {
     $scope.sala_selecionada = {};
     $scope.salas = [...$('rect.sala[id][ng-click]')].map(e => e.id);
     $scope.mapa_salas = {
+        'C201': {
+            bloco: 'C', piso: "superior",
+            descricao: 'Laboratório de Informática I'
+        },
         'C202': {
             bloco: 'C', piso: "superior",
-            descricao: 'Laboratório de Informática'
+            descricao: 'Laboratório de Informática III'
         },
         'C203': {
             bloco: 'C', piso: "superior",
-            descricao: 'Laboratório de Informática'
+            descricao: 'Laboratório de Informática V'
         },
-        'C201': {
+        'C207': {
             bloco: 'C', piso: "superior",
             descricao: 'Laboratório de Manutenção'
+        },
+        'C208': {
+            bloco: 'C', piso: "superior",
+            descricao: 'Laboratório de Informática IV'
+        },
+        'C209': {
+            bloco: 'C', piso: "superior",
+            descricao: 'Calem Línguas I'
+        },
+        'C210': {
+            bloco: 'C', piso: "superior",
+            descricao: 'Calem Línguas II'
+        },
+        'C212': {
+            bloco: 'C', piso: "superior",
+            descricao: 'Calem Línguas III'
         }
     }
 
