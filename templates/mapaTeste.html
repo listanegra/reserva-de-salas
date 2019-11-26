@@ -1,0 +1,86 @@
+<div id="card_mapa" class="card card-body">
+    <h5 class="card-title text-center">Mapa de salas</h5>
+
+    <div class="container">
+        <div class="row">
+            <svg id="view_mapa" class="col-sm" version="1.0" xmlns="http://www.w3.org/2000/svg" ng-click="ocultarDetalhes()" viewBox="0 0 1300 700" preserveAspectRatio="xMidYMid meet">
+                <g transform="translate(1.0, 1.0)" fill="transparent" stroke="none">
+                   
+                    <rect id="C201" class="sala" x="0" y="0" width="180" height="78" ng-click="mostrarDetalhes('C201'); $event.stopPropagation();"></rect>
+
+                    <rect id="C201" class="sala" x="0" y="78" width="130" height="110" ng-click="mostrarDetalhes('C201'); $event.stopPropagation();"></rect>
+
+                    <rect id="C201" class="sala" x="0" y="188" width="130" height="110" ng-click="mostrarDetalhes('C201'); $event.stopPropagation();"></rect>
+                    
+                    <rect id="C201" class="sala" x="0" y="298" width="130" height="110" ng-click="mostrarDetalhes('C201'); $event.stopPropagation();"></rect>
+
+                    <rect class="mapa" x="0" y="408" width="130" height="40"></rect>
+                    <rect class="mapa" x="0" y="448" width="130" height="40"></rect>
+                    <rect class="mapa" x="0" y="488" width="130" height="40"></rect>
+
+                    <rect id="C201" class="sala" x="130" y="618" width="160" height="80" ng-click="mostrarDetalhes('C201'); $event.stopPropagation();"></rect>
+
+                    <rect id="C201" class="sala" x="290" y="588" width="160" height="110" ng-click="mostrarDetalhes('C201'); $event.stopPropagation();"></rect>
+
+                    <rect id="C201" class="sala" x="450" y="588" width="160" height="110" ng-click="mostrarDetalhes('C201'); $event.stopPropagation();"></rect>
+
+                    <rect class="mapa" x="610" y="588" width="60" height="110"></rect>
+                    <rect class="mapa" x="670" y="588" width="60" height="110"></rect>
+                    <rect class="mapa" x="730" y="588" width="130" height="110"></rect>
+
+                    <rect id="C201" class="sala" x="860" y="588" width="160" height="110" ng-click="mostrarDetalhes('C201'); $event.stopPropagation();"></rect>
+
+                    <rect class="mapa" x="1020" y="588" width="160" height="110"></rect>
+
+                    <rect class="mapa" x="1180" y="588" width="118" height="110"></rect>
+
+                    <rect class="mapa" x="1168" y="488" width="130" height="40"></rect>
+                    <rect class="mapa" x="1168" y="448" width="130" height="40"></rect>
+                    <rect class="mapa" x="1168" y="408" width="130" height="40"></rect>
+                    
+                    <rect id="C201" class="sala" x="1168" y="280" width="130" height="128" ng-click="mostrarDetalhes('C201'); $event.stopPropagation();"></rect>
+
+                    <rect id="C201" class="sala" x="1168" y="150" width="130" height="130" ng-click="mostrarDetalhes('C201'); $event.stopPropagation();"></rect>
+                    
+                    <rect id="C201" class="sala" x="1168" y="0" width="130" height="150" ng-click="mostrarDetalhes('C201'); $event.stopPropagation();"></rect>
+
+                    <rect class="mapa" x="1108" y="0" width="60" height="60"></rect>
+                    <rect class="mapa" x="1028" y="0" width="80" height="60"></rect>
+
+                    <rect class="mapa" x="970" y="150" width="50" height="110"></rect>
+                    <rect class="mapa" x="920" y="150" width="50" height="110"></rect>
+                    <rect class="mapa" x="870" y="150" width="50" height="110"></rect>
+                    <rect class="mapa" x="820" y="150" width="50" height="110"></rect>
+                    <rect class="mapa" x="770" y="150" width="50" height="110"></rect>
+
+                    <rect id="C201" class="sala" x="620" y="150" width="150" height="110" ng-click="mostrarDetalhes('C201'); $event.stopPropagation();"></rect>
+
+                    <rect class="mapa" x="570" y="150" width="50" height="110"></rect>
+                    <rect class="mapa" x="520" y="150" width="50" height="110"></rect>
+                    <rect class="mapa" x="470" y="150" width="50" height="110"></rect>
+                    <rect class="mapa" x="420" y="150" width="50" height="110"></rect>
+                    <rect class="mapa" x="370" y="150" width="50" height="110"></rect>
+                    <rect class="mapa" x="290" y="150" width="80" height="110"></rect>
+                   
+                    <rect id="C201" class="sala" x="620" y="398" width="130" height="110" ng-click="mostrarDetalhes('C201'); $event.stopPropagation();"></rect>
+
+                    <!--<path class="mapa" d="M 130 100 H 1170 V 540 H 1120 V 200 H 960 V 150 H 320 V 180 H 250 V 150 H 180 V 540 H 130 Z" />
+                    <rect class="mapa" x="250" y="180" width="70" height="70"></rect> -->
+                </g>
+            </svg>
+        </div>
+        <div class="row">
+            <div id="card_descricao" class="col-sm card">
+                <h5 class="card-header">Sala <span ng-bind="sala_selecionada.nome"></span></h5>
+                <div class="card-body">
+                    <h5 class="card-title">Bloco <span ng-bind="sala_selecionada.dados.bloco"></span> - Piso <span ng-bind="sala_selecionada.dados.piso"></span>
+                    </h5>
+
+                    <h6 class="card-subtitle mb-2 text-muted" ng-bind="sala_selecionada.dados.descricao"></h6>
+                    <button type="button" class="float-right btn btn-primary">Reservar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
