@@ -25,6 +25,10 @@ rect.sala:active {
     fill: #d0d0d0;
 }
 
+#textoVertical {
+    writing-mode: sideways-lr;
+}
+
 #cidade {
     margin-top: 7px;
 }

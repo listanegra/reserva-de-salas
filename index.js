@@ -18,7 +18,7 @@ var app = angular.module("app", ["ngRoute"]).config(($routeProvider) => {
     }).otherwise('/');
 });
 
-app.controller('Main', function ($scope, $rootScope, $location) {
+app.controller('Main', function($scope, $rootScope, $location) {
     $rootScope.usuarios = {
         'admin': { permissions: 'root' }
     };
@@ -42,51 +42,119 @@ app.controller('Main', function ($scope, $rootScope, $location) {
     }
 });
 
-app.controller('Home', function ($scope, $rootScope, $location) {
+app.controller('Home', function($scope, $rootScope, $location) {
 
 });
 
-app.controller('Cadastro', function ($scope, $rootScope, $location) {
+app.controller('Cadastro', function($scope, $rootScope, $location) {
 
 });
 
-app.controller('Mapa', function ($scope, $rootScope, $location) {
+app.controller('Mapa', function($scope, $rootScope, $location) {
     const card_descricao = $('div#card_descricao');
     card_descricao.toggle();
 
     $scope.sala_selecionada = {};
     $scope.salas = [...$('rect.sala[id][ng-click]')].map(e => e.id);
     $scope.mapa_salas = {
+        'Mini Auditorio': {
+            bloco: 'C',
+            piso: "térreo",
+            descricao: 'Mini Auditório'
+        },
+        'Auditorio': {
+            bloco: 'C',
+            piso: "térreo",
+            descricao: 'Auditório'
+        },
+        'C102': {
+            bloco: 'C',
+            piso: "térreo",
+            descricao: 'Laboratório de Informática'
+        },
+        'C103': {
+            bloco: 'C',
+            piso: "térreo",
+            descricao: 'Laboratório de Informática'
+        },
+        'C104': {
+            bloco: 'C',
+            piso: "térreo",
+            descricao: 'Laboratório de Informática'
+        },
+        'C105': {
+            bloco: 'C',
+            piso: "térreo",
+            descricao: 'Sala de Xadrez'
+        },
+        'C106': {
+            bloco: 'C',
+            piso: "térreo",
+            descricao: 'Laboratório Interdisciplinar'
+        },
+        'C107': {
+            bloco: 'C',
+            piso: "térreo",
+            descricao: 'Laboratório de Computação Aplicada'
+        },
+        'C108': {
+            bloco: 'C',
+            piso: "térreo",
+            descricao: 'Sala de Aula Teórica'
+        },
+        'C110': {
+            bloco: 'C',
+            piso: "térreo",
+            descricao: 'Laboratório Eletrônica'
+        },
+        'C113': {
+            bloco: 'C',
+            piso: "térreo",
+            descricao: 'Laboratório Química B'
+        },
+        'C114': {
+            bloco: 'C',
+            piso: "térreo",
+            descricao: 'Laboratório Química A'
+        },
         'C201': {
-            bloco: 'C', piso: "superior",
+            bloco: 'C',
+            piso: "superior",
             descricao: 'Laboratório de Informática I'
         },
         'C202': {
-            bloco: 'C', piso: "superior",
+            bloco: 'C',
+            piso: "superior",
             descricao: 'Laboratório de Informática III'
         },
         'C203': {
-            bloco: 'C', piso: "superior",
+            bloco: 'C',
+            piso: "superior",
             descricao: 'Laboratório de Informática V'
         },
         'C207': {
-            bloco: 'C', piso: "superior",
+            bloco: 'C',
+            piso: "superior",
             descricao: 'Laboratório de Manutenção'
         },
         'C208': {
-            bloco: 'C', piso: "superior",
+            bloco: 'C',
+            piso: "superior",
             descricao: 'Laboratório de Informática IV'
         },
         'C209': {
-            bloco: 'C', piso: "superior",
+            bloco: 'C',
+            piso: "superior",
             descricao: 'Calem Línguas I'
         },
         'C210': {
-            bloco: 'C', piso: "superior",
+            bloco: 'C',
+            piso: "superior",
             descricao: 'Calem Línguas II'
         },
         'C212': {
-            bloco: 'C', piso: "superior",
+            bloco: 'C',
+            piso: "superior",
             descricao: 'Calem Línguas III'
         }
     }
