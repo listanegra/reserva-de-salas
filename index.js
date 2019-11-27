@@ -1,3 +1,18 @@
+class Sala {
+
+    constructor(bloco, piso, descricao) {
+        this.bloco = bloco;
+        this.piso = piso;
+        this.descricao = descricao;
+        this.reservas = [];
+    }
+
+    addReserva(periodo) {
+        this.reservas.push(periodo);
+    }
+
+}
+
 var drawer = $('div.bmd-layout-container.bmd-drawer-f-l');
 window.updateDrawer = () => window.innerWidth < 720 ? drawer.addClass('bmd-drawer-overlay') : drawer.removeClass('bmd-drawer-overlay');
 $(window).on('resize', window.updateDrawer);
@@ -57,106 +72,30 @@ app.controller('Mapa', function($scope, $rootScope, $location) {
     $scope.sala_selecionada = {};
     $scope.salas = [...$('rect.sala[id][ng-click]')].map(e => e.id);
     $scope.mapa_salas = {
-        'Mini Auditorio': {
-            bloco: 'C',
-            piso: "térreo",
-            descricao: 'Mini Auditório'
-        },
-        'Auditorio': {
-            bloco: 'C',
-            piso: "térreo",
-            descricao: 'Auditório'
-        },
-        'C102': {
-            bloco: 'C',
-            piso: "térreo",
-            descricao: 'Laboratório de Informática'
-        },
-        'C103': {
-            bloco: 'C',
-            piso: "térreo",
-            descricao: 'Laboratório de Informática'
-        },
-        'C104': {
-            bloco: 'C',
-            piso: "térreo",
-            descricao: 'Laboratório de Informática'
-        },
-        'C105': {
-            bloco: 'C',
-            piso: "térreo",
-            descricao: 'Sala de Xadrez'
-        },
-        'C106': {
-            bloco: 'C',
-            piso: "térreo",
-            descricao: 'Laboratório Interdisciplinar'
-        },
-        'C107': {
-            bloco: 'C',
-            piso: "térreo",
-            descricao: 'Laboratório de Computação Aplicada'
-        },
-        'C108': {
-            bloco: 'C',
-            piso: "térreo",
-            descricao: 'Sala de Aula Teórica'
-        },
-        'C110': {
-            bloco: 'C',
-            piso: "térreo",
-            descricao: 'Laboratório Eletrônica'
-        },
-        'C113': {
-            bloco: 'C',
-            piso: "térreo",
-            descricao: 'Laboratório Química B'
-        },
-        'C114': {
-            bloco: 'C',
-            piso: "térreo",
-            descricao: 'Laboratório Química A'
-        },
-        'C201': {
-            bloco: 'C',
-            piso: "superior",
-            descricao: 'Laboratório de Informática I'
-        },
-        'C202': {
-            bloco: 'C',
-            piso: "superior",
-            descricao: 'Laboratório de Informática III'
-        },
-        'C203': {
-            bloco: 'C',
-            piso: "superior",
-            descricao: 'Laboratório de Informática V'
-        },
-        'C207': {
-            bloco: 'C',
-            piso: "superior",
-            descricao: 'Laboratório de Manutenção'
-        },
-        'C208': {
-            bloco: 'C',
-            piso: "superior",
-            descricao: 'Laboratório de Informática IV'
-        },
-        'C209': {
-            bloco: 'C',
-            piso: "superior",
-            descricao: 'Calem Línguas I'
-        },
-        'C210': {
-            bloco: 'C',
-            piso: "superior",
-            descricao: 'Calem Línguas II'
-        },
-        'C212': {
-            bloco: 'C',
-            piso: "superior",
-            descricao: 'Calem Línguas III'
-        }
+        'Mini Auditorio': new Sala('C', "térreo", 'Mini Auditório',),
+        'Auditorio': new Sala('C', "térreo", 'Auditório'),
+        'C102': new Sala('C', "térreo", 'Laboratório de Informática'),
+        'C103': new Sala('C', "térreo", 'Laboratório de Informática'),
+        'C104': new Sala('C', "térreo", 'Laboratório de Informática'),
+        'C105': new Sala('C', "térreo", 'Sala de Xadrez'),
+        'C106': new Sala('C', "térreo", 'Laboratório Interdisciplinar'),
+        'C107': new Sala('C', "térreo", 'Laboratório de Computação Aplicada'),
+        'C108': new Sala('C', "térreo", 'Sala de Aula Teórica'),
+        'C110': new Sala('C', "térreo", 'Laboratório Eletrônica'),
+        'C113': new Sala('C', "térreo", 'Laboratório Química B'),
+        'C114': new Sala('C', "térreo", 'Laboratório Química A'),
+        'C201': new Sala('C', "superior", 'Laboratório de Informática I'),
+        'C202': new Sala('C', "superior", 'Laboratório de Informática III'),
+        'C203': new Sala('C', "superior", 'Laboratório de Informática V'),
+        'C207': new Sala('C', "superior", 'Laboratório de Manutenção'),
+        'C208': new Sala('C', "superior", 'Laboratório de Informática IV'),
+        'C209': new Sala('C', "superior", 'Calem Línguas I'),
+        'C210': new Sala('C', "superior", 'Calem Línguas II'),
+        'C212': new Sala('C', "superior", 'Calem Línguas III'),
+    }
+
+    $scope.reservarSala = (sala) => {
+        $scope.mapa_salas[sala].addReserva(Date.now());
     }
 
     $scope.mostrarDetalhes = (sala) => {
