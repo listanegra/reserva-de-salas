@@ -11,17 +11,17 @@ html {
     flex-grow: 1;
 }
 
-rect.sala {
+rect.sala, rect.escada {
     fill: transparent;
     stroke: black;
     stroke-width: 2px;
 }
 
-rect.sala:hover {
+rect.sala:hover, rect.escada:hover {
     fill: #eaeaea;
 }
 
-rect.sala:active {
+rect.sala:active, rect.escada:active {
     fill: #d0d0d0;
 }
 

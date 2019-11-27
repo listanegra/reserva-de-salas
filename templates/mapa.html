@@ -2,9 +2,8 @@
     <h5 class="card-title text-center">Mapa de salas</h5>
 
     <div class="container">
-        <div class="row">
-            <svg id="view_mapa" class="col-sm" version="1.0" xmlns="http://www.w3.org/2000/svg"
-                ng-click="ocultarDetalhes()" viewBox="0 0 1300 700" preserveAspectRatio="xMidYMid meet">
+        <div class="row" ng-click="ocultarDetalhes()">
+            <svg class="col-sm" version="1.0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1300 700" preserveAspectRatio="xMidYMid meet" ng-if="andar_atual == 2">
                 <g transform="translate(1.0, 1.0)" fill="transparent" stroke="none">
                     <rect class="mapa" x="0" y="0" width="50" height="100"></rect>
 
@@ -40,7 +39,134 @@
                     <rect class="mapa" x="1170" y="430" width="128" height="110"></rect>
 
                     <path class="mapa" d="M 130 100 H 1170 V 540 H 1120 V 200 H 960 V 150 H 320 V 180 H 250 V 150 H 180 V 540 H 130 Z" />
-                    <rect class="mapa" x="250" y="180" width="70" height="70"></rect>
+                    <rect class="escada" x="250" y="180" width="70" height="70" ng-click="mudarAndar(1)"></rect>
+                </g>
+            </svg>
+
+            <svg class="col-sm" version="1.0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1300 801" preserveAspectRatio="xMidYMid meet" ng-if="andar_atual == 1">
+                <g transform="translate(1.0, 1.0)" fill="transparent" stroke="none">
+                    <path class="mapa" d="M 248 150 H 618 V 190 H 818 V 150 H 1118 V 640 H 248 Z" />
+                    <path class="mapa" d="M 198 100 H 618 V -2 H 818 V 100 H 998 V -2 H 1058 V 100 H 
+                        1168 V 640 H 1300 V 730 H 888 V 690 H 288 V 730 H 198 V 802 H 68 V 640 H 198Z" />
+
+                    <text x="718" y="50" alignment-baseline="central">Entrada/Saída</text>
+                    <text x="1028" y="50" id="textoVertical" alignment-baseline="central">Bloco A</text>
+                    <text x="133" y="765" alignment-baseline="central">Entrada/Saída</text>
+                    <text x="1253" y="685" alignment-baseline="central">DERAC</text>
+
+                    <rect id="Mini Auditorio" class="sala" x="68" y="0" width="210" height="100" ng-click="mostrarDetalhes('Mini Auditorio'); $event.stopPropagation();"></rect>
+                    <text x="173" y="50" alignment-baseline="central">Mini Auditório</text>
+
+                    <rect id="C102" class="sala" x="68" y="100" width="130" height="135" ng-click="mostrarDetalhes('C102'); $event.stopPropagation();"></rect>
+                    <text x="133" y="168" alignment-baseline="central">C102</text>
+            
+                    <rect id="C103" class="sala" x="68" y="235" width="130" height="135" ng-click="mostrarDetalhes('C103'); $event.stopPropagation();"></rect>
+                    <text x="133" y="303" alignment-baseline="central">C103</text>
+                    
+                    <rect id="C104" class="sala" x="68" y="370" width="130" height="135" ng-click="mostrarDetalhes('C104'); $event.stopPropagation();"></rect>
+                    <text x="133" y="438" alignment-baseline="central">C104</text>
+                    
+                    <rect class="mapa" x="68" y="505" width="130" height="45"></rect>
+                    <text x="133" y="528" alignment-baseline="central">WC P.N.E</text>
+
+                    <rect class="mapa" x="68" y="550" width="130" height="45"></rect>
+                    <text x="133" y="573" alignment-baseline="central">WC Masculino</text>
+
+                    <rect class="mapa" x="68" y="595" width="130" height="45"></rect>
+                    <text x="133" y="618" alignment-baseline="central">WC Feminino</text>
+                    
+                    <rect id="C105" class="sala" x="198" y="730" width="90" height="70" ng-click="mostrarDetalhes('C105'); $event.stopPropagation();"></rect>
+                    <text x="243" y="765" alignment-baseline="central">C105</text>
+    
+                    <rect id="C106" class="sala" x="288" y="690" width="160" height="110" ng-click="mostrarDetalhes('C106'); $event.stopPropagation();"></rect>
+                    <text x="368" y="745" alignment-baseline="central">C106</text>
+                    
+                    <rect id="C107" class="sala" x="448" y="690" width="160" height="110" ng-click="mostrarDetalhes('C107'); $event.stopPropagation();"></rect>
+                    <text x="528" y="745" alignment-baseline="central">C107</text>
+                   
+                    <rect id="C108" class="sala" x="618" y="530" width="200" height="110" ng-click="mostrarDetalhes('C108'); $event.stopPropagation();"></rect>
+                    <text x="718" y="585" alignment-baseline="central">C108</text>
+
+                    <rect class="mapa" x="608" y="690" width="60" height="110"></rect>
+                    <text x="638" y="745" alignment-baseline="central">Sala</text>
+
+                    <rect class="mapa" x="668" y="690" width="60" height="110"></rect>
+                    <text x="698" y="745" alignment-baseline="central">Sala</text>
+                    
+                    <rect class="mapa" x="728" y="690" width="160" height="110"></rect>
+                    <text x="795" y="745" alignment-baseline="central">C109</text>
+                    
+                    <rect id="C110" class="sala" x="888" y="730" width="140" height="70" ng-click="mostrarDetalhes('C110'); $event.stopPropagation();"></rect>
+                    <text x="958" y="765" alignment-baseline="central">C110</text>
+                    
+                    <rect class="mapa" x="1028" y="730" width="140" height="70"></rect>
+                    <text x="1098" y="755" alignment-baseline="central">Departamento</text>
+                    <text x="1098" y="775" alignment-baseline="central">de Alimentos</text>
+
+                    <rect class="mapa" x="1168" y="730" width="130" height="70"></rect>
+                    <text x="1233" y="765" alignment-baseline="central">Escadas</text>
+
+                    <rect class="mapa" x="1168" y="595" width="130" height="45"></rect>
+                    <text x="1233" y="618" alignment-baseline="central">WC Feminino</text>
+                    
+                    <rect class="mapa" x="1168" y="550" width="130" height="45"></rect>
+                    <text x="1233" y="573" alignment-baseline="central">WC Masculino</text>
+
+                    <rect class="mapa" x="1168" y="505" width="130" height="45"></rect>
+                    <text x="1233" y="528" alignment-baseline="central">WC P.N.E</text>
+
+                    <rect id="C113" class="sala" x="1168" y="365" width="130" height="140" ng-click="mostrarDetalhes('C113'); $event.stopPropagation();"></rect>
+                    <text x="1233" y="435" alignment-baseline="central">C113</text>
+                   
+                    <rect id="C114" class="sala" x="1168" y="220" width="130" height="145" ng-click="mostrarDetalhes('C114'); $event.stopPropagation();"></rect>
+                    <text x="1233" y="293" alignment-baseline="central">C114</text>
+                   
+                    <rect id="Auditorio" class="sala" x="1168" y="0" width="130" height="220" ng-click="mostrarDetalhes('Auditorio'); $event.stopPropagation();"></rect>
+                    <text x="1233" y="110" alignment-baseline="central">Auditório</text>
+
+                    <rect class="mapa" x="1128" y="0" width="40" height="100"></rect>
+                    <text x="1148" y="50" alignment-baseline="central">Sala</text>
+
+                    <rect class="escada" x="1058" y="0" width="70" height="100" ng-click="mudarAndar(2)"></rect>
+                    <text x="1093" y="50" alignment-baseline="central">Escada</text>
+
+                    <rect class="mapa" x="1058" y="150" width="60" height="130"></rect>
+                    <text x="1088" y="215" id="textoVertical" alignment-baseline="central">FUNTEC</text>
+
+                    <rect class="mapa" x="998" y="150" width="60" height="130"></rect>
+                    <text x="1028" y="215" id="textoVertical" alignment-baseline="central">Sala</text>
+
+                    <rect class="mapa" x="938" y="150" width="60" height="130"></rect>
+                    <text x="958" y="215" id="textoVertical" alignment-baseline="central">Sala Médica/</text>
+                    <text x="978" y="215" id="textoVertical" alignment-baseline="central">Odontologia</text>
+
+                    <rect class="mapa" x="878" y="150" width="60" height="130"></rect>
+                    <text x="908" y="215" id="textoVertical" alignment-baseline="central">Sala</text>
+
+                    <rect class="mapa" x="818" y="150" width="60" height="130"></rect>
+                    <text x="848" y="215" id="textoVertical" alignment-baseline="central">Sala</text>
+
+                    <rect class="mapa" x="618" y="190" width="200" height="340"></rect>
+                    <text x="718" y="360" alignment-baseline="central">Capela</text>
+
+                    <rect class="mapa" x="558" y="150" width="60" height="130"></rect>
+                    <text x="588" y="215" id="textoVertical" alignment-baseline="central">DCE</text>
+
+                    <rect class="mapa" x="498" y="150" width="60" height="130"></rect>
+                    <text x="528" y="215" id="textoVertical" alignment-baseline="central">Coord.PPGCC</text>
+
+                    <rect class="mapa" x="438" y="150" width="60" height="130"></rect>
+                    <text x="468" y="215" id="textoVertical" alignment-baseline="central">WC Masculino</text>
+
+                    <rect class="mapa" x="378" y="150" width="60" height="130"></rect>
+                    <text x="408" y="215" id="textoVertical" alignment-baseline="central">WC Feminino</text>
+
+                    <rect class="mapa" x="318" y="150" width="60" height="130"></rect>
+                    <text x="348" y="215" id="textoVertical" alignment-baseline="central">Sala PPGCC</text>
+
+                    <rect class="escada" x="248" y="150" width="70" height="130" ng-click="mudarAndar(2)"></rect>
+                    <text x="283" y="215" alignment-baseline="central">Escada</text>
+
                 </g>
             </svg>
         </div>

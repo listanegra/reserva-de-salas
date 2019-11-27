@@ -33,7 +33,7 @@ var app = angular.module("app", ["ngRoute"]).config(($routeProvider) => {
     }).otherwise('/');
 });
 
-app.controller('Main', function($scope, $rootScope, $location) {
+app.controller('Main', function ($scope, $rootScope, $location) {
     $rootScope.usuarios = {
         'admin': { permissions: 'root' }
     };
@@ -57,22 +57,23 @@ app.controller('Main', function($scope, $rootScope, $location) {
     }
 });
 
-app.controller('Home', function($scope, $rootScope, $location) {
+app.controller('Home', function ($scope, $rootScope, $location) {
 
 });
 
-app.controller('Cadastro', function($scope, $rootScope, $location) {
+app.controller('Cadastro', function ($scope, $rootScope, $location) {
 
 });
 
-app.controller('Mapa', function($scope, $rootScope, $location) {
+app.controller('Mapa', function ($scope, $rootScope, $location) {
     const card_descricao = $('div#card_descricao');
     card_descricao.toggle();
 
+    $scope.andar_atual = 1;
     $scope.sala_selecionada = {};
     $scope.salas = [...$('rect.sala[id][ng-click]')].map(e => e.id);
     $scope.mapa_salas = {
-        'Mini Auditorio': new Sala('C', "térreo", 'Mini Auditório', ),
+        'Mini Auditorio': new Sala('C', "térreo", 'Mini Auditório'),
         'Auditorio': new Sala('C', "térreo", 'Auditório'),
         'C102': new Sala('C', "térreo", 'Laboratório de Informática'),
         'C103': new Sala('C', "térreo", 'Laboratório de Informática'),
@@ -109,6 +110,10 @@ app.controller('Mapa', function($scope, $rootScope, $location) {
 
     $scope.ocultarDetalhes = () => {
         if (card_descricao.is(":visible")) card_descricao.fadeToggle("slow", "linear");
+    }
+
+    $scope.mudarAndar = (andar) => {
+        $scope.andar_atual = andar;
     }
 
 });
