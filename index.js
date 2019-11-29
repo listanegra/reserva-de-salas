@@ -1,3 +1,15 @@
+class Reserva {
+
+    constructor(data, horaInicio, horaFinal) {
+        this.moment = moment.range(moment(`${data} ${horaInicio}`, 'DD/MM/YYYY HH:mm').toDate(), moment(`${data} ${horaFinal}`, 'DD/MM/YYYY HH:mm').toDate());
+    }
+
+    podeReservar(reserva) {
+        return this.moment.overlaps(reserva.moment);
+    }
+
+}
+
 class Sala {
 
     constructor(bloco, piso, descricao) {
@@ -7,12 +19,21 @@ class Sala {
         this.reservas = [];
     }
 
-    addReserva(periodo) {
-        this.reservas.push(periodo);
+    addReserva(reserva) {
+        this.reservas.push(reserva);
+    }
+
+    novaReserva(reserva) {
+        if (!this.reservas.length || !this.reservas.find(e => e.podeReservar(reserva))) {
+            this.addReserva(reserva);
+            return 'Horário reservado com sucesso';
+        }
+        return 'Data/Horário já reservado!';
     }
 
 }
 
+window['moment-range'].extendMoment(moment);
 var drawer = $('div.bmd-layout-container.bmd-drawer-f-l');
 window.updateDrawer = () => window.innerWidth < 720 ? drawer.addClass('bmd-drawer-overlay') : drawer.removeClass('bmd-drawer-overlay');
 $(window).on('resize', window.updateDrawer);
@@ -66,6 +87,13 @@ app.controller('Cadastro', function ($scope, $rootScope, $location) {
 });
 
 app.controller('Mapa', function ($scope, $rootScope, $location) {
+    $('[data-toggle="datepicker"]').datepicker({
+        autoPick: true,
+        format: 'dd/mm/yyyy',
+        daysMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
+        months: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
+    });
+
     const card_descricao = $('div#card_descricao');
     card_descricao.toggle();
 
@@ -96,7 +124,8 @@ app.controller('Mapa', function ($scope, $rootScope, $location) {
     }
 
     $scope.reservarSala = (sala) => {
-        $scope.mapa_salas[sala].addReserva(Date.now());
+        let reserva = new Reserva($('[data-toggle="datepicker"]').val(), $('#horaInicioReserva').val(), $('#horaFinalReserva').val());
+        alert($scope.mapa_salas[sala].novaReserva(reserva));
     }
 
     $scope.mostrarDetalhes = (sala) => {

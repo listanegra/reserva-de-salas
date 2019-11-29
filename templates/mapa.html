@@ -207,7 +207,25 @@
                     </h5>
 
                     <h6 class="card-subtitle mb-2 text-muted" ng-bind="sala_selecionada.dados.descricao"></h6>
-                    <button type="button" class="float-right btn btn-primary" ng-click="reservarSala(sala_selecionada.nome)">Reservar</button>
+                    <form>
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <label for="dataReserva" class="bmd-label-static">Data da reserva:</label>
+                                <input id="dataReserva" data-toggle="datepicker" class="form-control" required>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="horaInicioReserva" class="bmd-label-static">Das:</label>
+                                <input id="horaInicioReserva" type="time" class="form-control" required>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="horaFinalReserva" class="bmd-label-static">Às:</label>
+                                <input id="horaFinalReserva" type="time" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-row float-right">
+                            <button type="button" class="btn btn-primary" ng-click="reservarSala(sala_selecionada.nome)">Reservar</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
