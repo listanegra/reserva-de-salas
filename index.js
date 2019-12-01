@@ -54,7 +54,7 @@ var app = angular.module("app", ["ngRoute"]).config(($routeProvider) => {
     }).otherwise('/');
 });
 
-app.controller('Main', function ($scope, $rootScope, $location) {
+app.controller('Main', function($scope, $rootScope, $location) {
     $rootScope.usuarios = {
         'admin': { permissions: 'root' }
     };
@@ -78,18 +78,19 @@ app.controller('Main', function ($scope, $rootScope, $location) {
     }
 });
 
-app.controller('Home', function ($scope, $rootScope, $location) {
+app.controller('Home', function($scope, $rootScope, $location) {
 
 });
 
-app.controller('Cadastro', function ($scope, $rootScope, $location) {
+app.controller('Cadastro', function($scope, $rootScope, $location) {
 
 });
 
-app.controller('Mapa', function ($scope, $rootScope, $location) {
+app.controller('Mapa', function($scope, $rootScope, $location) {
     $('[data-toggle="datepicker"]').datepicker({
         autoPick: true,
         format: 'dd/mm/yyyy',
+        startDate: '+0d',
         daysMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
         months: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
     });
@@ -125,7 +126,9 @@ app.controller('Mapa', function ($scope, $rootScope, $location) {
 
     $scope.reservarSala = (sala) => {
         let reserva = new Reserva($('[data-toggle="datepicker"]').val(), $('#horaInicioReserva').val(), $('#horaFinalReserva').val());
-        alert($scope.mapa_salas[sala].novaReserva(reserva));
+        var texto = ($scope.mapa_salas[sala].novaReserva(reserva));
+        $.snackbar({ content: texto });
+        card_descricao.fadeToggle("slow", "linear");
     }
 
     $scope.mostrarDetalhes = (sala) => {
@@ -145,4 +148,29 @@ app.controller('Mapa', function ($scope, $rootScope, $location) {
         $scope.andar_atual = andar;
     }
 
+    var seleciona = document.getElementById('horaInicioReserva');
+    seleciona.addEventListener('change', selecionarHorarioFinal);
+
+    function selecionarHorarioFinal() {
+
+        var horario = document.getElementById('horaInicioReserva').value;
+        var horariosInicial = ['07:30', '08:20', '09:10', '10:20', '11:10', '12:00', '13:00', '13:50', '14:40', '15:50', '16:40', '17:30', '18:40', '19:30', '20:20', '21:20', '22:10'];
+        var horariosFinal = ['08:20', '09:10', '10:00', '11:10', '12:00', '12:50', '13:50', '14:40', '15:30', '16:40', '17:30', '18:20', '19:30', '20:20', '21:10', '22:10', '23:00'];
+        var options = '<option selected>Horario Final</option>';
+
+        if (horario == "Horario Inicial") {
+            options = '<option selected>Horario Final</option>';
+            $("#horaFinalReserva").html(options);
+            return;
+        }
+        for (j = 0; j < horariosFinal.length; j++) {
+            if (horario == horariosInicial[j]) {
+                for (i = j; i < horariosFinal.length; i++) {
+                    options += '<option value="' + horariosFinal[i] + '">' + horariosFinal[i] + '</option>';
+                }
+                $("#horaFinalReserva").html(options);
+                break;
+            }
+        }
+    }
 });

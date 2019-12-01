@@ -11,22 +11,37 @@ html {
     flex-grow: 1;
 }
 
-rect.sala, rect.escada {
+rect.sala,
+rect.escada {
     fill: transparent;
     stroke: black;
     stroke-width: 2px;
 }
 
-rect.sala:hover, rect.escada:hover {
+rect.sala:hover,
+rect.escada:hover {
     fill: #eaeaea;
 }
 
-rect.sala:active, rect.escada:active {
+rect.sala:active,
+rect.escada:active {
     fill: #d0d0d0;
 }
 
 #textoVertical {
     writing-mode: sideways-lr;
+}
+
+#estado {
+    color: silver;
+}
+
+option {
+    color: darkslategray;
+}
+
+#check {
+    color: darkslategray;
 }
 
 #cidade {
