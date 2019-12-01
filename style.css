@@ -44,8 +44,8 @@ option {
     color: darkslategray;
 }
 
-#cidade {
-    margin-top: 7px;
+#card_descricao {
+    margin-top: 2%;
 }
 
 .mapa {
