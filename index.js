@@ -58,6 +58,9 @@ var app = angular.module("app", ["ngRoute"]).config(($routeProvider) => {
     }).when('/alterarCadastro', {
         templateUrl: './templates/alterarCadastro.html',
         controller: 'alterarCadastro'
+    }).when('/suasReservas', {
+        templateUrl: './templates/suasReservas.html',
+        controller: 'suasReservas'
     }).when('/salas', {
         templateUrl: './templates/mapa.html',
         controller: 'Mapa'
@@ -100,6 +103,10 @@ app.controller('Cadastro', function($scope, $rootScope, $location) {
 });
 
 app.controller('alterarCadastro', function($scope, $rootScope, $location) {
+
+});
+
+app.controller('suasReservas', function($scope, $rootScope, $location) {
 
 });
 
@@ -146,6 +153,8 @@ app.controller('Mapa', function($scope, $rootScope, $location) {
         var texto = ($scope.mapa_salas[sala].novaReserva(reserva));
         $.snackbar({ content: texto });
         card_descricao.fadeToggle("slow", "linear");
+        $scope.mostrarDetalhes($scope.sala_selecionada.nome);
+        card_descricao.fadeToggle("slow", "linear");
     }
 
     $scope.mostrarDetalhes = (sala) => {
@@ -153,9 +162,8 @@ app.controller('Mapa', function($scope, $rootScope, $location) {
         var horariosInicial = ['07h30', '08h20', '09h10', '10h20', '11h10', '12h00', '13h00', '13h50', '14h40', '15h50', '16h40', '17h30', '18h40', '19h30', '20h20', '21h20', '22h10'];
         var horariosFinal = ['08h20', '09h10', '10h00', '11h10', '12h00', '12h50', '13h50', '14h40', '15h30', '16h40', '17h30', '18h20', '19h30', '20h20', '21h10', '22h10', '23h00'];
         var table = '';
-        var data = document.getElementById('dataReserva').value;
         for (i = 0; i < 17; i++) {
-            let reserva = new Reserva(data, horariosInicial[i], horariosFinal[i]);
+            let reserva = new Reserva($('[data-toggle="datepicker"]').val(), horariosInicial[i], horariosFinal[i]);
             var texto = ($scope.mapa_salas[sala].verificarReserva(reserva));
             table += '<tr><th>' + codigo[i] + '</th><td>' + horariosInicial[i] + '</td><td>' + horariosFinal[i] + '</td><td>' + texto + '</td></tr>';
         }
@@ -177,8 +185,15 @@ app.controller('Mapa', function($scope, $rootScope, $location) {
         $scope.andar_atual = andar;
     }
 
-    var seleciona = document.getElementById('horaInicioReserva');
-    seleciona.addEventListener('change', selecionarHorarioFinal);
+    var atualiza = document.getElementById('dataReserva').addEventListener('focusout', atualizaHorario);
+
+    function atualizaHorario() {
+        card_descricao.fadeToggle("slow", "linear");
+        setTimeout(() => { $scope.mostrarDetalhes($scope.sala_selecionada.nome); }, 500);
+        card_descricao.fadeToggle("slow", "linear");
+    }
+
+    var seleciona = document.getElementById('horaInicioReserva').addEventListener('change', selecionarHorarioFinal);
 
     function selecionarHorarioFinal() {
 
