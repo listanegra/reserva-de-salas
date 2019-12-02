@@ -68,6 +68,13 @@ var app = angular.module("app", ["ngRoute"]).config(($routeProvider) => {
 });
 
 app.controller('Main', function($scope, $rootScope, $location) {
+    $scope.fecharDrawer = () => {
+        if (window.innerWidth >= 720) {
+            $('#ocultar').removeClass('bmd-layout-container.bmd-drawer-f-l bmd-drawer-in');
+            $('#ocultar').addClass('bmd-layout-container.bmd-drawer-f-l');
+        }
+    }
+
     $rootScope.usuarios = {
         'admin': { permissions: 'root' },
         'Guilherme': { permissions: 'root' }
@@ -114,7 +121,8 @@ app.controller('Mapa', function($scope, $rootScope, $location) {
     $('[data-toggle="datepicker"]').datepicker({
         autoPick: true,
         format: 'dd/mm/yyyy',
-        startDate: '+0d',
+        startDate: '0d',
+        autoHide: true,
         daysMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
         months: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
     });

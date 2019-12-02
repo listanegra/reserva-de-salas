@@ -14,7 +14,7 @@
 </head>
 
 <body ng-app="app" ng-controller="Main">
-    <div class="bmd-layout-container bmd-drawer-f-l">
+    <div id="ocultar" class="bmd-layout-container bmd-drawer-f-l">
         <header class="bmd-layout-header" ng-show="!isLoginScreen()">
             <div class="navbar navbar-light bg-faded">
                 <button class="navbar-toggler" type="button" data-toggle="drawer" data-target="#dw-s1">
@@ -31,17 +31,17 @@
                 <a class="navbar-brand">Reserva de Salas</a>
             </header>
             <ul class="list-group">
-                <a class="list-group-item" href="#!home">Home</a>
-                <a class="list-group-item" href="#!cadastro" ng-if="checkUsuario($root.usuario)">Cadastro de
+                <a class="list-group-item" href="#!home" ng-click="fecharDrawer()">Home</a>
+                <a class="list-group-item" href="#!cadastro" ng-if="checkUsuario($root.usuario)" ng-click="fecharDrawer()">Cadastro de
                     Usuários</a>
-                <a class="list-group-item" href="#!alterarCadastro" ng-if="checkUsuario($root.usuario)">Alterar 
+                <a class="list-group-item" href="#!alterarCadastro" ng-if="checkUsuario($root.usuario)" ng-click="fecharDrawer()">Alterar 
                         Cadastro de Usuários</a>
-                <a class="list-group-item" href="#!suasReservas">Suas Reservas</a>
-                <a class="list-group-item" href="#!salas">Mapa de salas</a>
+                <a class="list-group-item" href="#!suasReservas" ng-click="fecharDrawer()">Suas Reservas</a>
+                <a class="list-group-item" href="#!salas" ng-click="fecharDrawer()">Mapa de salas</a>
             </ul>
         </div>
 
-        <main class="bmd-layout-content">
+        <main class="bmd-layout-content" ng-click="fecharDrawer()">
             <div ng-view class="container d-flex justify-content-center" ng-class="{'h-100': isLoginScreen()}"></div>
         </main>
     </div>
