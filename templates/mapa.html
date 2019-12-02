@@ -256,7 +256,13 @@
                                 <th>Status</th>
                             </tr>
                         </thead>
-                        <tbody id="tabelaHorario">
+                        <tbody>
+                            <tr ng-repeat="(k, v) in horarios">
+                                <td>{{k}}</td>
+                                <td>{{v.horaInicio}}</td>
+                                <td>{{v.horaFinal}}</td>
+                                <td>{{mapa_salas[sala_selecionada.nome].verificarReserva(v) ? 'Disponível' : 'Reservado'}}</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>

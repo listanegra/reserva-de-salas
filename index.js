@@ -1,7 +1,34 @@
+class Usuario {
+
+    constructor(email, endereco, complemento, cep, cidade, estado, root) {
+        this.email = email;
+        this.endereco = endereco;
+        this.complemento = complemento;
+        this.cep = cep;
+        this.cidade = cidade;
+        this.estado = estado;
+        this.root = root;
+    }
+
+}
+
 class Reserva {
 
-    constructor(data, horaInicio, horaFinal) {
-        this.moment = moment.range(moment(`${data} ${horaInicio}`, 'DD/MM/YYYY HH:mm').toDate(), moment(`${data} ${horaFinal}`, 'DD/MM/YYYY HH:mm').toDate());
+    constructor(horaInicio, horaFinal) {
+        this.horaInicio = horaInicio;
+        this.horaFinal = horaFinal;
+    }
+
+    set data(data) {
+        this.moment = moment.range(moment(`${data} ${this.horaInicio}`, 'DD/MM/YYYY HH:mm').toDate(), moment(`${data} ${this.horaFinal}`, 'DD/MM/YYYY HH:mm').toDate());
+    }
+
+    set usuario(usuario) {
+        this._usuario = usuario;
+    }
+
+    get usuario() {
+        return this._usuario;
     }
 
     podeReservar(reserva) {
@@ -16,22 +43,27 @@ class Sala {
         this.bloco = bloco;
         this.piso = piso;
         this.descricao = descricao;
-        this.reservas = [];
+        this._reservas = [];
+    }
+
+    get reservas() {
+        return this._reservas;
     }
 
     addReserva(reserva) {
-        this.reservas.push(reserva);
+        this._reservas.push(reserva);
+    }
+
+    removerReserva(reserva) {
+        this._reservas = this._reservas.slice(this._reservas.indexOf(reserva), 1);
     }
 
     verificarReserva(reserva) {
-        if (!this.reservas.length || !this.reservas.find(e => e.podeReservar(reserva))) {
-            return 'Disponivel';
-        }
-        return 'Reservado';
+        return !this._reservas.length || !this._reservas.find(e => e.podeReservar(reserva));
     }
 
     novaReserva(reserva) {
-        if (!this.reservas.length || !this.reservas.find(e => e.podeReservar(reserva))) {
+        if (this.verificarReserva(reserva)) {
             this.addReserva(reserva);
             return 'Horário reservado com sucesso';
         }
@@ -55,9 +87,6 @@ var app = angular.module("app", ["ngRoute"]).config(($routeProvider) => {
     }).when('/cadastro', {
         templateUrl: './templates/cadastro.html',
         controller: 'Cadastro'
-    }).when('/alterarCadastro', {
-        templateUrl: './templates/alterarCadastro.html',
-        controller: 'alterarCadastro'
     }).when('/suasReservas', {
         templateUrl: './templates/suasReservas.html',
         controller: 'suasReservas'
@@ -76,8 +105,7 @@ app.controller('Main', function($scope, $rootScope, $location) {
     }
 
     $rootScope.usuarios = {
-        'admin': { permissions: 'root' },
-        'Guilherme': { permissions: 'root' }
+        'admin': new Usuario('admin@admin.com', 'Casa da esquina', 'Fundo', '84000-000', 'Milharal Ponta Grossa', 'PR', true)
     };
 
     $scope.$on('$viewContentLoaded', () => {
@@ -95,7 +123,7 @@ app.controller('Main', function($scope, $rootScope, $location) {
     $scope.isLoginScreen = () => $location.path() == '/';
 
     $scope.checkUsuario = (usuario) => {
-        return $rootScope.usuarios[usuario] && $rootScope.usuarios[usuario].permissions == 'root';
+        return $rootScope.usuarios[usuario] && $rootScope.usuarios[usuario].root;
     }
 });
 
@@ -104,17 +132,21 @@ app.controller('Home', function($scope, $rootScope, $location) {
 });
 
 app.controller('Cadastro', function($scope, $rootScope, $location) {
+    $scope.usuario = {};
+
     $scope.cadastrar = () => {
+        $rootScope.usuarios[$scope.usuario.nome] = Object.assign(new Usuario(), $scope.usuario);
+    };
 
-    }
-});
-
-app.controller('alterarCadastro', function($scope, $rootScope, $location) {
-
+    $scope.excluirUsuario = (usuario) => delete $rootScope.usuarios[usuario];
+    $scope.alterarUsuario = (usuario) => Object.assign($scope.usuario, $rootScope.usuarios[usuario]);
 });
 
 app.controller('suasReservas', function($scope, $rootScope, $location) {
-
+    $scope.removerReserva = (sala, reserva) => {
+        $rootScope.removerReserva(sala, reserva);
+        $(`tr#${sala}`).remove();
+    };
 });
 
 app.controller('Mapa', function($scope, $rootScope, $location) {
@@ -156,50 +188,83 @@ app.controller('Mapa', function($scope, $rootScope, $location) {
         'C212': new Sala('C', "superior", 'Calem Línguas III'),
     }
 
+    $scope.horarios = {
+        'M1': new Reserva('07h30', '08h20'),
+        'M2': new Reserva('08h20', '09h10'),
+        'M3': new Reserva('09h10', '10h00'),
+        'M4': new Reserva('10h20', '11h10'),
+        'M5': new Reserva('11h10', '12h00'),
+        'M6': new Reserva('12h00', '12h50'),
+        'T1': new Reserva('13h00', '13h50'),
+        'T2': new Reserva('13h50', '14h40'),
+        'T3': new Reserva('14h40', '15h30'),
+        'T4': new Reserva('15h50', '16h40'),
+        'T5': new Reserva('16h40', '17h30'),
+        'T6': new Reserva('17h30', '18h20'),
+        'N1': new Reserva('18h40', '19h30'),
+        'N2': new Reserva('19h30', '20h20'),
+        'N3': new Reserva('20h20', '21h10'),
+        'N4': new Reserva('21h20', '22h10'),
+        'N5': new Reserva('22h10', '23h00')
+    };
+
+    $rootScope.buscarReservas = (usuario) => {
+        let reservas = [];
+        for (let sala of Object.keys($scope.mapa_salas)) {
+            let found = $scope.mapa_salas[sala].reservas.find(e => e.usuario == $rootScope.usuarios[usuario]);
+            if (found) reservas.push({ sala: sala, reserva: found });
+        }
+        return reservas;
+    }
+
+    $rootScope.removerReserva = (sala, reserva) => {
+        //$scope.mapa_salas[sala].removerReserva(reserva);
+    };
+
     $scope.reservarSala = (sala) => {
-        let reserva = new Reserva($('[data-toggle="datepicker"]').val(), $('#horaInicioReserva').val(), $('#horaFinalReserva').val());
-        var texto = ($scope.mapa_salas[sala].novaReserva(reserva));
+        let reserva = new Reserva($('#horaInicioReserva').val(), $('#horaFinalReserva').val());
+        reserva.data = $('[data-toggle="datepicker"]').val();
+        reserva.usuario = $rootScope.usuarios[$rootScope.usuario];
+        
+        var texto = $scope.mapa_salas[sala].novaReserva(reserva);
         $.snackbar({ content: texto });
+
         card_descricao.fadeToggle("slow", "linear");
         $scope.mostrarDetalhes($scope.sala_selecionada.nome);
         card_descricao.fadeToggle("slow", "linear");
-    }
+    };
 
     $scope.mostrarDetalhes = (sala) => {
-        var codigo = ['M1', 'M2', 'M3', 'M4', 'M5', 'M6', 'T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'N1', 'N2', 'N3', 'N4', 'N5'];
-        var horariosInicial = ['07h30', '08h20', '09h10', '10h20', '11h10', '12h00', '13h00', '13h50', '14h40', '15h50', '16h40', '17h30', '18h40', '19h30', '20h20', '21h20', '22h10'];
-        var horariosFinal = ['08h20', '09h10', '10h00', '11h10', '12h00', '12h50', '13h50', '14h40', '15h30', '16h40', '17h30', '18h20', '19h30', '20h20', '21h10', '22h10', '23h00'];
-        var table = '';
-        for (i = 0; i < 17; i++) {
-            let reserva = new Reserva($('[data-toggle="datepicker"]').val(), horariosInicial[i], horariosFinal[i]);
-            var texto = ($scope.mapa_salas[sala].verificarReserva(reserva));
-            table += '<tr><th>' + codigo[i] + '</th><td>' + horariosInicial[i] + '</td><td>' + horariosFinal[i] + '</td><td>' + texto + '</td></tr>';
-        }
-        $("#tabelaHorario").html(table);
-
+        setTimeout(() => {
+            $scope.$apply(() => {
+                for (let reserva of Object.keys($scope.horarios)) {
+                    $scope.horarios[reserva].data = $('[data-toggle="datepicker"]').val();
+                }
+            });
+        }, 100);
+        
+        
         if ($scope.sala_selecionada.nome != sala || card_descricao.is(":hidden")) {
             if (card_descricao.is(":visible")) card_descricao.fadeToggle(100);
             $scope.sala_selecionada.nome = sala;
             $scope.sala_selecionada.dados = $scope.mapa_salas[sala];
             card_descricao.fadeToggle("slow", "linear");
         }
-    }
+    };
 
     $scope.ocultarDetalhes = () => {
         if (card_descricao.is(":visible")) card_descricao.fadeToggle("slow", "linear");
-    }
+    };
 
     $scope.mudarAndar = (andar) => {
         $scope.andar_atual = andar;
-    }
+    };
 
-    var atualiza = document.getElementById('dataReserva').addEventListener('focusout', atualizaHorario);
-
-    function atualizaHorario() {
+    document.getElementById('dataReserva').addEventListener('focusout', () => {
         card_descricao.fadeToggle("slow", "linear");
-        setTimeout(() => { $scope.mostrarDetalhes($scope.sala_selecionada.nome); }, 500);
+        $scope.mostrarDetalhes($scope.sala_selecionada.nome);
         card_descricao.fadeToggle("slow", "linear");
-    }
+    });
 
     var seleciona = document.getElementById('horaInicioReserva').addEventListener('change', selecionarHorarioFinal);
 
