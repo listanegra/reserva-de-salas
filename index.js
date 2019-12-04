@@ -107,7 +107,8 @@ app.controller('Main', function($scope, $rootScope, $location) {
     }
 
     $rootScope.usuarios = {
-        'admin': new Usuario('admin@admin.com', 'Guilherme', 'Vaz', 'Rua bahia 1255', '', '84070-300', 'Ponta Grossa', 'PR', true)
+        'admin': new Usuario('admin@admin.com', 'Guilherme', 'Vaz', 'Rua bahia 1255', '', '84070-300', 'Ponta Grossa', 'PR', true),
+        'Guilherme': new Usuario('guilherme.vaz06@hotmail.com', 'Guilherme', 'Vaz', 'Rua bahia 1255', '', '84070-300', 'Ponta Grossa', 'PR', false),
     };
 
     $scope.$on('$viewContentLoaded', () => {
@@ -137,7 +138,6 @@ app.controller('Cadastro', function($scope, $rootScope, $location) {
     $scope.usuario = {};
 
     document.getElementById('formulario').addEventListener('submit', () => {
-        alert($rootScope.usuarios[$scope.usuario.user]);
         if ($scope.usuario.user == $rootScope.usuarios[$scope.usuario.user]) {
             $.snackbar({ content: 'Usuario ja cadastrado no sistema' });
         } else if ($('#estado').val() == 'Selecione') {
@@ -203,44 +203,53 @@ app.controller('Mapa', function($scope, $rootScope, $location) {
     }
 
     $scope.horarios = {
-        'M1': new Reserva('07h30', '08h20'),
-        'M2': new Reserva('08h20', '09h10'),
-        'M3': new Reserva('09h10', '10h00'),
-        'M4': new Reserva('10h20', '11h10'),
-        'M5': new Reserva('11h10', '12h00'),
-        'M6': new Reserva('12h00', '12h50'),
-        'T1': new Reserva('13h00', '13h50'),
-        'T2': new Reserva('13h50', '14h40'),
-        'T3': new Reserva('14h40', '15h30'),
-        'T4': new Reserva('15h50', '16h40'),
-        'T5': new Reserva('16h40', '17h30'),
-        'T6': new Reserva('17h30', '18h20'),
-        'N1': new Reserva('18h40', '19h30'),
-        'N2': new Reserva('19h30', '20h20'),
-        'N3': new Reserva('20h20', '21h10'),
-        'N4': new Reserva('21h20', '22h10'),
-        'N5': new Reserva('22h10', '23h00')
+        'M1': new Reserva('07:30', '08:20'),
+        'M2': new Reserva('08:20', '09:10'),
+        'M3': new Reserva('09:10', '10:00'),
+        'M4': new Reserva('10:20', '11:10'),
+        'M5': new Reserva('11:10', '12:00'),
+        'M6': new Reserva('12:00', '12:50'),
+        'T1': new Reserva('13:00', '13:50'),
+        'T2': new Reserva('13:50', '14:40'),
+        'T3': new Reserva('14:40', '15:30'),
+        'T4': new Reserva('15:50', '16:40'),
+        'T5': new Reserva('16:40', '17:30'),
+        'T6': new Reserva('17:30', '18:20'),
+        'N1': new Reserva('18:40', '19:30'),
+        'N2': new Reserva('19:30', '20:20'),
+        'N3': new Reserva('20:20', '21:10'),
+        'N4': new Reserva('21:20', '22:10'),
+        'N5': new Reserva('22:10', '23:00')
     };
 
     $rootScope.buscarReservas = (usuario) => {
         let reservas = [];
         for (let sala of Object.keys($scope.mapa_salas)) {
             let found = $scope.mapa_salas[sala].reservas.find(e => e.usuario == $rootScope.usuarios[usuario]);
-            if (found) reservas.push({ sala: sala, reserva: found });
+            if (found) reservas.push({ sala: sala, reserva: found, data: moment().format('DD/MM/YYYY') });
         }
         return reservas;
     }
 
     $scope.reservarSala = (sala) => {
-        let reserva = new Reserva($('#horaInicioReserva').val(), $('#horaFinalReserva').val());
-        reserva.data = $('[data-toggle="datepicker"]').val();
-        reserva.usuario = $rootScope.usuarios[$rootScope.usuario];
+        var horaInicio = $('#horaInicioReserva').val();
+        var horaFinal = $('#horaFinalReserva').val();
+        var data = $('[data-toggle="datepicker"]').val();
+        if (horaInicio != 'Horario Inicial' && horaFinal != 'Horario Final') {
+            if (horaInicio < horaFinal) {
+                if (horaInicio > moment().format('LT') || data != moment().format('DD/MM/YYYY')) {
+                    let reserva = new Reserva(horaInicio, horaFinal);
+                    reserva.data = data;
+                    reserva.usuario = $rootScope.usuarios[$rootScope.usuario];
 
-        $.snackbar({ content: $scope.mapa_salas[sala].novaReserva(reserva) });
+                    $.snackbar({ content: $scope.mapa_salas[sala].novaReserva(reserva) });
 
-        card_descricao.fadeToggle("slow", "linear");
-        $scope.mostrarDetalhes($scope.sala_selecionada.nome);
-        card_descricao.fadeToggle("slow", "linear");
+                    card_descricao.fadeToggle("slow", "linear");
+                    $scope.mostrarDetalhes($scope.sala_selecionada.nome);
+                    card_descricao.fadeToggle("slow", "linear");
+                } else $.snackbar({ content: 'Horario inicial deve ser maior que o horario atual' });
+            } else $.snackbar({ content: 'Horario inicial deve ser menor que o horario final' });
+        } else $.snackbar({ content: 'Selecione um horario valido' });
     };
 
     $scope.mostrarDetalhes = (sala) => {

@@ -5,6 +5,7 @@
         <thead>
             <tr>
                 <th>Sala</th>
+                <th>Data</th>
                 <th>Das</th>
                 <th>Às</th>
             </tr>
@@ -12,6 +13,7 @@
         <tbody>
             <tr ng-repeat="(k, v) in $root.buscarReservas($root.usuario)" id="{{v.sala}}">
                 <td>{{v.sala}}</td>
+                <td>{{v.data}}</td>
                 <td>{{v.reserva.horaInicio}}</td>
                 <td>{{v.reserva.horaFinal}}</td>
                 <td>
