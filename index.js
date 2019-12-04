@@ -57,7 +57,7 @@ class Sala {
     }
 
     removerReserva(reserva) {
-        this._reservas = this._reservas.slice(this._reservas.indexOf(reserva), 1);
+        this._reservas.splice(this._reservas.indexOf(reserva), 1);
     }
 
     verificarReserva(reserva) {
@@ -98,7 +98,7 @@ var app = angular.module("app", ["ngRoute"]).config(($routeProvider) => {
     }).otherwise('/');
 });
 
-app.controller('Main', function($scope, $rootScope, $location) {
+app.controller('Main', function ($scope, $rootScope, $location) {
     $scope.fecharDrawer = () => {
         if (window.innerWidth > 0) {
             drawer.removeClass('bmd-drawer-in');
@@ -130,47 +130,59 @@ app.controller('Main', function($scope, $rootScope, $location) {
     }
 });
 
-app.controller('Home', function($scope, $rootScope, $location) {
+app.controller('Home', function ($scope, $rootScope, $location) {
 
 });
 
-app.controller('Cadastro', function($scope, $rootScope, $location) {
+app.controller('Cadastro', function ($scope, $rootScope, $location) {
     $scope.usuario = {};
 
-    document.getElementById('formulario').addEventListener('submit', () => {
-        if ($scope.usuario.user == $rootScope.usuarios[$scope.usuario.user]) {
-            $.snackbar({ content: 'Usuario ja cadastrado no sistema' });
+    $('#formulario').submit((event) => {
+        event.preventDefault();
+        if ($rootScope.usuarios[$scope.usuario.user]) {
+            $.snackbar({ content: 'Usuário já cadastrado no sistema' });
         } else if ($('#estado').val() == 'Selecione') {
-            $.snackbar({ content: 'Selecione um Estado' });
+            $.snackbar({ content: 'Selecione um estado' });
         } else {
             $rootScope.usuarios[$scope.usuario.user] = Object.assign(new Usuario(), $scope.usuario);
-            $.snackbar({ content: 'Usuario cadastrado com sucesso' });
+            $.snackbar({ content: 'Usuário cadastrado com sucesso' });
         }
-    });
+    })
+
 
     $scope.excluirUsuario = (usuario) => {
         delete $rootScope.usuarios[usuario];
-        $.snackbar({ content: 'Usuario excluido com sucesso' });
+        $.snackbar({ content: 'Usuário excluído com sucesso' });
     }
 
     $scope.alterarUsuario = (usuario) => Object.assign($scope.usuario, $rootScope.usuarios[usuario]);
 });
 
-app.controller('suasReservas', function($scope, $rootScope, $location) {
+app.controller('suasReservas', function ($scope, $rootScope, $location) {
+    $scope.reservas = [];
+    if ($rootScope.mapa_salas) {
+        for (let sala of Object.keys($rootScope.mapa_salas)) {
+            let found = $rootScope.mapa_salas[sala].reservas.find(e => e.usuario == $rootScope.usuarios[$rootScope.usuario]);
+            if (found) $scope.reservas.push({ sala: sala, reserva: found, data: found.moment.start.format('DD/MM/YYYY') });
+        }
+    }
+
     $scope.removerReserva = (sala, reserva) => {
-        $(`tr#${sala}`).remove();
-        $.snackbar({ content: 'Reserva excluida com sucesso' });
+        $rootScope.mapa_salas[sala].removerReserva(reserva);
+        $scope.reservas.splice($scope.reservas.indexOf($scope.reservas.find(e => e.reserva == reserva)), 1);
+        $.snackbar({ content: 'Reserva excluída com sucesso' });
     };
 });
 
-app.controller('Mapa', function($scope, $rootScope, $location) {
+app.controller('Mapa', function ($scope, $rootScope, $location) {
     $('[data-toggle="datepicker"]').datepicker({
         autoPick: true,
         format: 'dd/mm/yyyy',
         startDate: '0d',
         autoHide: true,
         daysMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
-        months: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
+        months: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+        filter: (date, view) => date.getDay() !== 0 && view === 'day'
     });
 
     const card_descricao = $('div#card_descricao');
@@ -179,7 +191,7 @@ app.controller('Mapa', function($scope, $rootScope, $location) {
     $scope.andar_atual = 1;
     $scope.sala_selecionada = {};
     $scope.salas = [...$('rect.sala[id][ng-click]')].map(e => e.id);
-    $scope.mapa_salas = {
+    $rootScope.mapa_salas = {
         'Mini Auditorio': new Sala('C', "térreo", 'Mini Auditório'),
         'Auditorio': new Sala('C', "térreo", 'Auditório'),
         'C102': new Sala('C', "térreo", 'Laboratório de Informática'),
@@ -222,15 +234,6 @@ app.controller('Mapa', function($scope, $rootScope, $location) {
         'N5': new Reserva('22:10', '23:00')
     };
 
-    $rootScope.buscarReservas = (usuario) => {
-        let reservas = [];
-        for (let sala of Object.keys($scope.mapa_salas)) {
-            let found = $scope.mapa_salas[sala].reservas.find(e => e.usuario == $rootScope.usuarios[usuario]);
-            if (found) reservas.push({ sala: sala, reserva: found, data: moment().format('DD/MM/YYYY') });
-        }
-        return reservas;
-    }
-
     $scope.reservarSala = (sala) => {
         var horaInicio = $('#horaInicioReserva').val();
         var horaFinal = $('#horaFinalReserva').val();
@@ -247,9 +250,9 @@ app.controller('Mapa', function($scope, $rootScope, $location) {
                     card_descricao.fadeToggle("slow", "linear");
                     $scope.mostrarDetalhes($scope.sala_selecionada.nome);
                     card_descricao.fadeToggle("slow", "linear");
-                } else $.snackbar({ content: 'Horario inicial deve ser maior que o horario atual' });
-            } else $.snackbar({ content: 'Horario inicial deve ser menor que o horario final' });
-        } else $.snackbar({ content: 'Selecione um horario valido' });
+                } else $.snackbar({ content: 'Horário inicial deve ser maior que o horário atual' });
+            } else $.snackbar({ content: 'Horário inicial deve ser menor que o horário final' });
+        } else $.snackbar({ content: 'Selecione um horário válido' });
     };
 
     $scope.mostrarDetalhes = (sala) => {
@@ -273,9 +276,7 @@ app.controller('Mapa', function($scope, $rootScope, $location) {
         if (card_descricao.is(":visible")) card_descricao.fadeToggle("slow", "linear");
     };
 
-    $scope.mudarAndar = (andar) => {
-        $scope.andar_atual = andar;
-    };
+    $scope.mudarAndar = (andar) => $scope.andar_atual = andar;
 
     document.getElementById('dataReserva').addEventListener('focusout', () => {
         card_descricao.fadeToggle("slow", "linear");

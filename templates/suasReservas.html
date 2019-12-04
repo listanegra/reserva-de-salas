@@ -1,25 +1,27 @@
 <div class="card card-body">
     <h5 class="card-title text-center">Suas reservas</h5>
 
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th>Sala</th>
-                <th>Data</th>
-                <th>Das</th>
-                <th>Às</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr ng-repeat="(k, v) in $root.buscarReservas($root.usuario)" id="{{v.sala}}">
-                <td>{{v.sala}}</td>
-                <td>{{v.data}}</td>
-                <td>{{v.reserva.horaInicio}}</td>
-                <td>{{v.reserva.horaFinal}}</td>
-                <td>
-                    <button class="float-right btn btn-primary" ng-click="removerReserva(v.sala, v.reserva)"><i class="material-icons">delete_forever</i></button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Sala</th>
+                    <th>Data</th>
+                    <th>Das</th>
+                    <th>Às</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="(k, v) in reservas" id="{{v.sala}}">
+                    <td>{{v.sala}}</td>
+                    <td>{{v.data}}</td>
+                    <td>{{v.reserva.horaInicio}}</td>
+                    <td>{{v.reserva.horaFinal}}</td>
+                    <td>
+                        <button class="float-right btn btn-primary" ng-click="removerReserva(v.sala, v.reserva)"><i class="material-icons">delete_forever</i></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>

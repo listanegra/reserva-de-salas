@@ -232,24 +232,26 @@
                             <button type="button" class="btn btn-primary" ng-click="reservarSala(sala_selecionada.nome)">Reservar</button>
                         </div>
                     </form>
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>Codigo</th>
-                                <th>Inicio</th>
-                                <th>Término</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr ng-repeat="(k, v) in horarios">
-                                <td>{{k}}</td>
-                                <td>{{v.horaInicio}}</td>
-                                <td>{{v.horaFinal}}</td>
-                                <td>{{mapa_salas[sala_selecionada.nome].verificarReserva(v) ? 'Disponível' : 'Reservado'}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Codigo</th>
+                                    <th>Inicio</th>
+                                    <th>Término</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="(k, v) in horarios">
+                                    <th>{{k}}</th>
+                                    <td>{{v.horaInicio}}</td>
+                                    <td>{{v.horaFinal}}</td>
+                                    <td>{{mapa_salas[sala_selecionada.nome].verificarReserva(v) ? 'Disponível' : 'Reservado'}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
