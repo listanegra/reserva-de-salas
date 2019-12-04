@@ -74,6 +74,8 @@ class Sala {
 
 }
 
+const API_URL = "http://localhost:3000";
+
 window['moment-range'].extendMoment(moment);
 var drawer = $('div.bmd-layout-container.bmd-drawer-f-l');
 window.updateDrawer = () => window.innerWidth < 720 ? drawer.addClass('bmd-drawer-overlay') : drawer.removeClass('bmd-drawer-overlay');
@@ -114,7 +116,7 @@ app.controller('Main', function ($scope, $rootScope, $location) {
 
     $rootScope.usuarios = {};
 
-    $.get("http://localhost:3000/usuarios", (data) => {
+    $.get(API_URL + "/usuarios", (data) => {
         for (let user of data) {
             let u = getUsuario(user);
             $rootScope.usuarios[u.usuario] = u.objeto;
@@ -157,11 +159,11 @@ app.controller('Cadastro', function ($scope, $rootScope, $location) {
             if ($rootScope.usuarios[$scope.usuario.id]) {
                 $.ajax({
                     type: "PUT",
-                    url: `http://localhost:3000/usuarios/${$scope.usuario.id}`,
+                    url: `${API_URL}/usuarios/${$scope.usuario.id}`,
                     data: Object.assign(new Usuario(), $scope.usuario)
                 }).done(() => $scope.usuario = {});
             } else {
-                $.post("http://localhost:3000/usuarios", Object.assign(new Usuario(), $scope.usuario)).done((data) => {
+                $.post(API_URL + "/usuarios", Object.assign(new Usuario(), $scope.usuario)).done((data) => {
                     let user = getUsuario(data);
                     $rootScope.usuarios[user.usuario] = user.objeto;
                     $.snackbar({ content: 'Usuário cadastrado com sucesso' });
@@ -174,7 +176,7 @@ app.controller('Cadastro', function ($scope, $rootScope, $location) {
     $scope.excluirUsuario = (usuario) => {
         $.ajax({
             type: "DELETE",
-            url: `http://localhost:3000/usuarios/${usuario}`,
+            url: `${API_URL}/usuarios/${usuario}`,
         }).done(() => {
             delete $rootScope.usuarios[usuario];
             $.snackbar({ content: 'Usuário excluído com sucesso' });
