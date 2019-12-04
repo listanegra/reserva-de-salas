@@ -1,7 +1,7 @@
 <div class="card card-body">
     <h5 class="card-title text-center">Cadastro de Usuários</h5>
 
-    <form>
+    <form id="formulario">
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="email" class="bmd-label-floating">Email</label>
@@ -9,32 +9,36 @@
             </div>
             <div class="form-group col-md-6">
                 <label for="usuario" class="bmd-label-floating">Usuário</label>
-                <input type="text" class="form-control" id="usuario" ng-model="usuario.nome" required>
+                <input type="text" class="form-control" id="usuario" ng-model="usuario.user" required>
             </div>
-        </div>
-        <div class="form-group">
-            <label for="endereco" class="bmd-label-floating">Endereço</label>
-            <input type="text" class="form-control" id="endereco" ng-model="usuario.endereco" required>
-        </div>
-        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="nome" class="bmd-label-floating">Nome</label>
+                <input type="text" class="form-control" id="nome" ng-model="usuario.nome" required>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="sobrenome" class="bmd-label-floating">Sobrenome</label>
+                <input type="text" class="form-control" id="sobrenome" ng-model="usuario.sobrenome" required>
+            </div>
+            <div class="form-group col-md-12">
+                <label for="endereco" class="bmd-label-floating">Endereço</label>
+                <input type="text" class="form-control" id="endereco" ng-model="usuario.endereco" required>
+            </div>
             <div class="form-group col-md-10">
                 <label for="complemento" class="bmd-label-floating">Complemento</label>
                 <input type="text" class="form-control" id="complemento" ng-model="usuario.complemento">
             </div>
-
             <div class="form-group col-md-2">
                 <label for="cep" class="bmd-label-floating">CEP</label>
                 <input type="text" class="form-control" id="cep" maxlength="8" minlength="8" ng-model="usuario.cep" required>
             </div>
-        </div>
-        <div class="form-row">
             <div class="form-group col-md-8">
-                <label id="cidade" for="cidade" class="bmd-label-floating">Cidade</label>
+                <label for="cidade" class="bmd-label-floating">Cidade</label>
                 <input type="text" class="form-control" id="cidade" ng-model="usuario.cidade" required>
             </div>
             <div class="form-group col-md-4">
+                <label for="estado" class="bmd-label-floating">Estado</label>
                 <select class="form-control" id="estado" ng-model="usuario.estado" required>
-                    <option selected>Estado</option>
+                    <option selected>Selecione</option>
                     <option value="AC">Acre</option>
                     <option value="AL">Alagoas</option>
                     <option value="AP">Amapá</option>
@@ -71,19 +75,23 @@
                 <label id="check" class="form-check-label" for="admin">Usuário administrador</label>
             </div>
         </div>
-        <button type="submit" class="float-right btn btn-primary" ng-click="cadastrar()">Cadastrar</button>
+        <button type="submit" class="float-right btn btn-primary">Salvar</button>
     </form>
-
+    <h5 class="card-title text-center">Usuários Cadastrados</h5>
     <table class="table table-hover">
         <thead>
             <tr>
+                <th>Usuario</th>
                 <th>Nome</th>
-                <th>Email</th>
+                <th>Sobrenome</th>
+                <th>email</th>
             </tr>
         </thead>
         <tbody>
             <tr ng-repeat="(k, v) in $root.usuarios">
                 <td>{{k}}</td>
+                <td>{{v.nome}}</td>
+                <td>{{v.sobrenome}}</td>
                 <td>{{v.email}}</td>
                 <td>
                     <button class="float-right btn btn-primary" ng-click="excluirUsuario(k)"><i class="material-icons">delete_forever</i></button>

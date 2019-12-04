@@ -14,7 +14,7 @@
 </head>
 
 <body ng-app="app" ng-controller="Main">
-    <div id="ocultar" class="bmd-layout-container bmd-drawer-f-l">
+    <div class="bmd-layout-container bmd-drawer-f-l">
         <header class="bmd-layout-header" ng-show="!isLoginScreen()">
             <div class="navbar navbar-light bg-faded">
                 <button class="navbar-toggler" type="button" data-toggle="drawer" data-target="#dw-s1">
@@ -35,6 +35,7 @@
                 <a class="list-group-item" href="#!cadastro" ng-if="checkUsuario($root.usuario)" ng-click="fecharDrawer()">Cadastro de Usuários</a>
                 <a class="list-group-item" href="#!suasReservas" ng-click="fecharDrawer()">Suas Reservas</a>
                 <a class="list-group-item" href="#!salas" ng-click="fecharDrawer()">Mapa de salas</a>
+                <a class="list-group-item" href="#!login" ng-click="fecharDrawer()">Sair</a>
             </ul>
         </div>
 

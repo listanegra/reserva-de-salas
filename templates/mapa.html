@@ -216,30 +216,15 @@
                             <div class="form-group col-md-4">
                                 <label for="horaInicioReserva" class="bmd-label-static">Das:</label>
                                 <select id="horaInicioReserva" class="form-control" required>
-                                    <option selected>Horario Inicial</option>
-                                    <option>07:30</option>
-                                    <option>08:20</option>
-                                    <option>09:10</option>
-                                    <option>10:20</option>
-                                    <option>11:10</option>
-                                    <option>12:00</option>
-                                    <option>13:00</option>
-                                    <option>13:50</option>
-                                    <option>14:40</option>
-                                    <option>15:50</option>
-                                    <option>16:40</option>
-                                    <option>17:30</option>
-                                    <option>18:40</option>
-                                    <option>19:30</option>
-                                    <option>20:20</option>
-                                    <option>21:20</option>
-                                    <option>22:10</option>                                    
+                                    <option selected >Horario Inicial</option>
+                                    <option ng-repeat="(k, v) in horarios">{{v.horaInicio}}</option>
                                 </select>
                             </div>
                             <div class="form-group col-md-4">
                                 <label for="horaFinalReserva" class="bmd-label-static">Às:</label>
                                 <select id="horaFinalReserva" class="form-control" required>
                                     <option selected>Horario Final</option>
+                                    <option ng-repeat="(k, v) in horarios">{{v.horaFinal}}</option>
                                 </select>
                             </div>
                         </div>

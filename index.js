@@ -1,7 +1,9 @@
 class Usuario {
 
-    constructor(email, endereco, complemento, cep, cidade, estado, root) {
+    constructor(email, nome, sobrenome, endereco, complemento, cep, cidade, estado, root) {
         this.email = email;
+        this.nome = nome;
+        this.sobrenome = sobrenome;
         this.endereco = endereco;
         this.complemento = complemento;
         this.cep = cep;
@@ -98,14 +100,14 @@ var app = angular.module("app", ["ngRoute"]).config(($routeProvider) => {
 
 app.controller('Main', function($scope, $rootScope, $location) {
     $scope.fecharDrawer = () => {
-        if (window.innerWidth >= 720) {
-            $('#ocultar').removeClass('bmd-layout-container.bmd-drawer-f-l bmd-drawer-in');
-            $('#ocultar').addClass('bmd-layout-container.bmd-drawer-f-l');
+        if (window.innerWidth > 0) {
+            drawer.removeClass('bmd-drawer-in');
+            $('div.bmd-layout-backdrop').removeClass('in');
         }
     }
 
     $rootScope.usuarios = {
-        'admin': new Usuario('admin@admin.com', 'Casa da esquina', 'Fundo', '84000-000', 'Milharal Ponta Grossa', 'PR', true)
+        'admin': new Usuario('admin@admin.com', 'Guilherme', 'Vaz', 'Rua bahia 1255', '', '84070-300', 'Ponta Grossa', 'PR', true)
     };
 
     $scope.$on('$viewContentLoaded', () => {
@@ -134,18 +136,30 @@ app.controller('Home', function($scope, $rootScope, $location) {
 app.controller('Cadastro', function($scope, $rootScope, $location) {
     $scope.usuario = {};
 
-    $scope.cadastrar = () => {
-        $rootScope.usuarios[$scope.usuario.nome] = Object.assign(new Usuario(), $scope.usuario);
-    };
+    document.getElementById('formulario').addEventListener('submit', () => {
+        alert($rootScope.usuarios[$scope.usuario.user]);
+        if ($scope.usuario.user == $rootScope.usuarios[$scope.usuario.user]) {
+            $.snackbar({ content: 'Usuario ja cadastrado no sistema' });
+        } else if ($('#estado').val() == 'Selecione') {
+            $.snackbar({ content: 'Selecione um Estado' });
+        } else {
+            $rootScope.usuarios[$scope.usuario.user] = Object.assign(new Usuario(), $scope.usuario);
+            $.snackbar({ content: 'Usuario cadastrado com sucesso' });
+        }
+    });
 
-    $scope.excluirUsuario = (usuario) => delete $rootScope.usuarios[usuario];
+    $scope.excluirUsuario = (usuario) => {
+        delete $rootScope.usuarios[usuario];
+        $.snackbar({ content: 'Usuario excluido com sucesso' });
+    }
+
     $scope.alterarUsuario = (usuario) => Object.assign($scope.usuario, $rootScope.usuarios[usuario]);
 });
 
 app.controller('suasReservas', function($scope, $rootScope, $location) {
     $scope.removerReserva = (sala, reserva) => {
-        $rootScope.removerReserva(sala, reserva);
         $(`tr#${sala}`).remove();
+        $.snackbar({ content: 'Reserva excluida com sucesso' });
     };
 });
 
@@ -217,17 +231,12 @@ app.controller('Mapa', function($scope, $rootScope, $location) {
         return reservas;
     }
 
-    $rootScope.removerReserva = (sala, reserva) => {
-        //$scope.mapa_salas[sala].removerReserva(reserva);
-    };
-
     $scope.reservarSala = (sala) => {
         let reserva = new Reserva($('#horaInicioReserva').val(), $('#horaFinalReserva').val());
         reserva.data = $('[data-toggle="datepicker"]').val();
         reserva.usuario = $rootScope.usuarios[$rootScope.usuario];
-        
-        var texto = $scope.mapa_salas[sala].novaReserva(reserva);
-        $.snackbar({ content: texto });
+
+        $.snackbar({ content: $scope.mapa_salas[sala].novaReserva(reserva) });
 
         card_descricao.fadeToggle("slow", "linear");
         $scope.mostrarDetalhes($scope.sala_selecionada.nome);
@@ -241,9 +250,8 @@ app.controller('Mapa', function($scope, $rootScope, $location) {
                     $scope.horarios[reserva].data = $('[data-toggle="datepicker"]').val();
                 }
             });
-        }, 100);
-        
-        
+        }, 500);
+
         if ($scope.sala_selecionada.nome != sala || card_descricao.is(":hidden")) {
             if (card_descricao.is(":visible")) card_descricao.fadeToggle(100);
             $scope.sala_selecionada.nome = sala;
@@ -265,29 +273,4 @@ app.controller('Mapa', function($scope, $rootScope, $location) {
         $scope.mostrarDetalhes($scope.sala_selecionada.nome);
         card_descricao.fadeToggle("slow", "linear");
     });
-
-    var seleciona = document.getElementById('horaInicioReserva').addEventListener('change', selecionarHorarioFinal);
-
-    function selecionarHorarioFinal() {
-
-        var horario = document.getElementById('horaInicioReserva').value;
-        var horariosInicial = ['07:30', '08:20', '09:10', '10:20', '11:10', '12:00', '13:00', '13:50', '14:40', '15:50', '16:40', '17:30', '18:40', '19:30', '20:20', '21:20', '22:10'];
-        var horariosFinal = ['08:20', '09:10', '10:00', '11:10', '12:00', '12:50', '13:50', '14:40', '15:30', '16:40', '17:30', '18:20', '19:30', '20:20', '21:10', '22:10', '23:00'];
-        var options = '<option selected>Horario Final</option>';
-
-        if (horario == "Horario Inicial") {
-            options = '<option selected>Horario Final</option>';
-            $("#horaFinalReserva").html(options);
-            return;
-        }
-        for (j = 0; j < horariosFinal.length; j++) {
-            if (horario == horariosInicial[j]) {
-                for (i = j; i < horariosFinal.length; i++) {
-                    options += '<option value="' + horariosFinal[i] + '">' + horariosFinal[i] + '</option>';
-                }
-                $("#horaFinalReserva").html(options);
-                break;
-            }
-        }
-    }
 });
