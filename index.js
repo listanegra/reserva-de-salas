@@ -79,6 +79,12 @@ var drawer = $('div.bmd-layout-container.bmd-drawer-f-l');
 window.updateDrawer = () => window.innerWidth < 720 ? drawer.addClass('bmd-drawer-overlay') : drawer.removeClass('bmd-drawer-overlay');
 $(window).on('resize', window.updateDrawer);
 
+function getUsuario(user) {
+    let usuario = user['id'];
+    delete user.id;
+    return { usuario: usuario, objeto: Object.assign(new Usuario(), user) };
+}
+
 var app = angular.module("app", ["ngRoute"]).config(($routeProvider) => {
     $routeProvider.when('/', {
         templateUrl: './templates/login.html',
@@ -106,10 +112,14 @@ app.controller('Main', function ($scope, $rootScope, $location) {
         }
     }
 
-    $rootScope.usuarios = {
-        'admin': new Usuario('admin@admin.com', 'Guilherme', 'Vaz', 'Rua bahia 1255', '', '84070-300', 'Ponta Grossa', 'PR', true),
-        'Guilherme': new Usuario('guilherme.vaz06@hotmail.com', 'Guilherme', 'Vaz', 'Rua bahia 1255', '', '84070-300', 'Ponta Grossa', 'PR', false),
-    };
+    $rootScope.usuarios = {};
+
+    $.get("http://localhost:3000/usuarios", (data) => {
+        for (let user of data) {
+            let u = getUsuario(user);
+            $rootScope.usuarios[u.usuario] = u.objeto;
+        }
+    });
 
     $scope.$on('$viewContentLoaded', () => {
         $('body').bootstrapMaterialDesign();
@@ -144,18 +154,37 @@ app.controller('Cadastro', function ($scope, $rootScope, $location) {
         } else if ($('#estado').val() == 'Selecione') {
             $.snackbar({ content: 'Selecione um estado' });
         } else {
-            $rootScope.usuarios[$scope.usuario.user] = Object.assign(new Usuario(), $scope.usuario);
-            $.snackbar({ content: 'Usuário cadastrado com sucesso' });
+            if ($rootScope.usuarios[$scope.usuario.id]) {
+                $.ajax({
+                    type: "PUT",
+                    url: `http://localhost:3000/usuarios/${$scope.usuario.id}`,
+                    data: Object.assign(new Usuario(), $scope.usuario)
+                }).done(() => $scope.usuario = {});
+            } else {
+                $.post("http://localhost:3000/usuarios", Object.assign(new Usuario(), $scope.usuario)).done((data) => {
+                    let user = getUsuario(data);
+                    $rootScope.usuarios[user.usuario] = user.objeto;
+                    $.snackbar({ content: 'Usuário cadastrado com sucesso' });
+                });
+            }
         }
     })
 
 
     $scope.excluirUsuario = (usuario) => {
-        delete $rootScope.usuarios[usuario];
-        $.snackbar({ content: 'Usuário excluído com sucesso' });
+        $.ajax({
+            type: "DELETE",
+            url: `http://localhost:3000/usuarios/${usuario}`,
+        }).done(() => {
+            delete $rootScope.usuarios[usuario];
+            $.snackbar({ content: 'Usuário excluído com sucesso' });
+        })
     }
 
-    $scope.alterarUsuario = (usuario) => Object.assign($scope.usuario, $rootScope.usuarios[usuario]);
+    $scope.alterarUsuario = (usuario) => {
+        $scope.usuario.id = usuario;
+        Object.assign($scope.usuario, $rootScope.usuarios[usuario]);
+    }
 });
 
 app.controller('suasReservas', function ($scope, $rootScope, $location) {
